@@ -20,8 +20,9 @@ float u[size], v[size], u_prev[size], v_prev[size], dens[size], dens_prev[size];
 
 void draw_dens(BITMAP *d)
 {
-    for(int i=0; i< N; i++)
+    
     for(int j=0; j< N; j++)
+    for(int i=0; i< N; i++)
     {
         int c = (int)( dens[IX(i,j)]*100);
 
@@ -73,7 +74,7 @@ int main(void)
 
 		set_color_depth(32);
 
-		if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, 200, 200, 0, 0)<0)
+		if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, N, N, 0, 0)<0)
 		{
 		 allegro_message("Error: %s\n",allegro_error);
 		 return(1);
@@ -81,10 +82,10 @@ int main(void)
 
 
 		bufor = create_bitmap(SCREEN_W, SCREEN_H);
-		BITMAP *smoke = create_bitmap(128, 128);
+		BITMAP *smoke = create_bitmap(N, N);
 
 
-
+        float DELTA = 1.0f/20.0f;
 		s=clock();
 		while( !key[KEY_ESC])
 		{
@@ -100,8 +101,8 @@ int main(void)
 		clear_to_color(bufor, makecol(128,255,128));
 
 
-            vel_step ( N, u, v, u_prev, v_prev, 0, czas );
-            dens_step ( N, dens, dens_prev, u, v, 0, czas );
+            vel_step ( N, u, v, u_prev, v_prev, 0, DELTA );
+            dens_step ( N, dens, dens_prev, u, v, 0, DELTA );
 
             draw_dens(bufor);
 
@@ -129,6 +130,7 @@ int main(void)
 		}
 
 		destroy_bitmap(bufor);
+        destroy_bitmap(smoke);
         return 0;
 }
 END_OF_MAIN()
