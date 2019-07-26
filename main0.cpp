@@ -69,8 +69,7 @@ int main(int argc, char **argv)
 {
         allegro_init();
 
-		install_mouse();
-		install_keyboard();
+		
 
         if(argc > 1 && strcmp(argv[1], "--textmode") == 0)
         {
@@ -83,7 +82,10 @@ int main(int argc, char **argv)
 		{
 		 allegro_message("Error: %s\n",allegro_error);
 		 return(1);
-		}
+		}else {
+            install_mouse();
+		    install_keyboard();
+        }
 
 		bufor = create_bitmap(N, N);
 		BITMAP *smoke = create_bitmap(N, N);
