@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 		install_mouse();
 		install_keyboard();
 
-        if(argc > 1 && strcmp(argv[1], "--texmode") == 0)
+        if(argc > 1 && strcmp(argv[1], "--textmode") == 0)
         {
             flag_textmode = 1;
         }
