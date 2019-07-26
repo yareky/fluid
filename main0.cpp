@@ -14,6 +14,7 @@ BITMAP *bufor;
  float czas=0,czas2=0;
  float fps_time, fps;
  int fps_counter;
+ int flag_textmode = 0;
 
 float u[size], v[size], u_prev[size], v_prev[size], dens[size], dens_prev[size];
 
@@ -64,24 +65,27 @@ void add_gas(int x, int y, int r)
     }
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
         allegro_init();
 
 		install_mouse();
 		install_keyboard();
 
+        if(argc > 1 && strcmp(argv[1], "--texmode") == 0)
+        {
+            flag_textmode = 1;
+        }
 
 		set_color_depth(32);
 
-		if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, N, N, 0, 0)<0)
+		if (flag_textmode==0 && set_gfx_mode(GFX_AUTODETECT_WINDOWED, N, N, 0, 0)<0)
 		{
 		 allegro_message("Error: %s\n",allegro_error);
 		 return(1);
 		}
 
-
-		bufor = create_bitmap(SCREEN_W, SCREEN_H);
+		bufor = create_bitmap(N, N);
 		BITMAP *smoke = create_bitmap(N, N);
 
 
@@ -121,12 +125,16 @@ int main(void)
                 fps = fps_counter/fps_time;
                 fps_counter=0;
                 fps_time = 0;
+
+                printf("fps: %.1f\n", fps);
             }
 
             //stretch_blit(smoke, bufor, 0, 0, smoke->w, smoke->h, 0, 0, bufor->w, bufor->h);
             textprintf_ex(bufor,font, 10, 10, 0xffffff, 0, "fps: %.1f", fps);
             draw_mouse();
-            blit(bufor, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+
+            if(flag_textmode == 0)
+            blit(bufor, screen, 0, 0, 0, 0, N, N);
 		}
 
 		destroy_bitmap(bufor);
